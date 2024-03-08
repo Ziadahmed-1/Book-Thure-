@@ -4,7 +4,7 @@ import { useEffect, useState, useMemo } from "react";
 // import { useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
-import { faBook } from "@fortawesome/free-solid-svg-icons";
+import { faBook, faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { faStopwatch } from "@fortawesome/free-solid-svg-icons";
 import Loading from "./Loading";
 
@@ -15,9 +15,9 @@ const RecomindationSection = function ({ setCartItems, cartItems }) {
   //   offset: ["0 1", "1.1 1"],
   // });
 
-  const animated = `last-of-type:animate-wiggle last-of-type:animate-infinite last-of-type:animate-duration-[1500ms] last-of-type:animate-delay-500 last-of-type:animate-ease-in-out`;
+  const [randomBook, setRandomBook] = useState();
+  const [err, setErr] = useState(null);
 
-  const [randomBook, setRandomBook] = useState(null);
   const genres = [
     "Fiction",
     "Fantasy",
@@ -43,11 +43,27 @@ const RecomindationSection = function ({ setCartItems, cartItems }) {
   }, []);
 
   useEffect(() => {
-    fetch(url, options)
-      .then((res) => res.json())
-      .then((data) => {
-        setRandomBook(data);
-      });
+    try {
+      fetch(url, options)
+        .then((res) => {
+          try {
+            if (!res.ok) {
+              throw new Error(
+                "We're currently experiencing technical difficulties. Please try again later. We apologize for the inconvenience."
+              );
+            } else {
+              return res.json();
+            }
+          } catch (err) {
+            setErr(err.message);
+          }
+        })
+        .then((data) => {
+          setRandomBook(data);
+        });
+    } catch (err) {
+      setErr("There is some server issues, please try again later");
+    }
   }, [url, options]);
   return (
     <
@@ -101,11 +117,21 @@ const RecomindationSection = function ({ setCartItems, cartItems }) {
             ))}
           </ul>
         </div>
-        <div className="w-1/2 flex flex-col items-center justify-center gap-2 bg-stone-100 rounded-2xl my-6 pb-6 min-w-fit border-4">
-          <h3 className=" text-lg md:text-xl lg:text-2xl uppercase font-semibold py-6 px-3 text-lime-950 text-center">
+        <div className="max-w-1/2 flex flex-col items-center justify-center gap-2 bg-stone-100 rounded-2xl my-6 pb-6  border-4">
+          <h3 className=" text-lg md:text-xl lg:text-2xl uppercase font-semibold py-6 px-3 text-lime-950 text-center lg:min-w-[16rem] xl:min-w-[30rem] 2xl:min-w-[38rem] ">
             The book of the day
           </h3>
-          {randomBook ? (
+          {err ? (
+            <div className="max-w-2/3 flex flex-col items-center">
+              <FontAwesomeIcon
+                icon={faCircleExclamation}
+                className="size-16 text-slate-800 "
+              />
+              <h3 className="text-md md:text-xl lg:text-2xl max-w-50 text-balance font-semibold py-6 px-3 text-lime-950 text-center">
+                {err}
+              </h3>
+            </div>
+          ) : randomBook ? (
             <BookCard
               setCartItems={setCartItems}
               id={randomBook}

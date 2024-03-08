@@ -17,17 +17,12 @@ const BookCard = function ({ book, setCartItems, cartItems }) {
   );
 
   useEffect(() => {
-    console.log(
-      `${book.title} rendered and is in the cart : ${cartItems?.some(
-        (oldBook) => oldBook.book_id === id
-      )}`
-    );
     if (cartItems?.some((oldBook) => oldBook.book_id === id)) {
       setAdded(true);
     } else {
       setAdded(false);
     }
-  }, [cartItems, book]);
+  }, [cartItems, id, book]);
 
   function handleAddBook() {
     setCartItems((prev) => {
@@ -53,7 +48,12 @@ const BookCard = function ({ book, setCartItems, cartItems }) {
           src={book.cover}
         />
         <div className="flex gap-4 absolute bottom-40 left-16 invisible opacity-80 group-hover:visible transition-all duration-200 ">
-          <a href={book.url} rel="noreferrer" target="_blank">
+          <a
+            href={book.url}
+            aria-label="move-to-book-page"
+            rel="noreferrer"
+            target="_blank"
+          >
             <FontAwesomeIcon
               icon={faInfo}
               className="bg-stone-100 rounded-full text-2xl py-5 px-7 hover:bg-white hover:opacity-100   "

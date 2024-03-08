@@ -15,9 +15,7 @@ const App = function () {
   function handleThemeToggle() {
     setDarkTheme((prev) => !prev);
   }
-  useEffect(() => {
-    console.log(darkTheme);
-  }, [darkTheme]);
+
   let dark = darkTheme ? "dark" : "";
   const dialog = useRef(null);
 

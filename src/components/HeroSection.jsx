@@ -21,6 +21,8 @@ const HeroSection = function ({ scrollToSearch }) {
               your wallet and the planet!
             </p>
             <button
+              type="button"
+              aria-label="move-to-search-section"
               onClick={scrollToSearch}
               className="mx-auto bg-slate-800 dark:bg-stone-300 text-stone-200 dark:text-darkCustom text-lg md:text-xl lg:text-2xl py-2 px-4 rounded-md hover:bg-slate-700 transition-all dark:hover:bg-stone-100 "
             >

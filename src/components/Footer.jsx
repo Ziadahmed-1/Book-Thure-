@@ -13,10 +13,6 @@ import { faPhone } from "@fortawesome/free-solid-svg-icons";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { forwardRef } from "react";
 const Footer = forwardRef(function Footer(props, ref) {
-  const showInMapClicked = (your_lat, your_lng) => {
-    window.open("https://maps.google.com?q=" + your_lat + "," + your_lng);
-  };
-
   return (
     <footer className="bg-[#0E1E2B] flex flex-col sm:flex-row text-pretty  justify-evenly text-stone-300 p-8 gap-6  md:p-10 lg:p-12 xl:p-20 ">
       <div className="md:flex flex-col gap-2 items-center justify-center hidden ">
@@ -31,18 +27,18 @@ const Footer = forwardRef(function Footer(props, ref) {
         </h4>
 
         <a
-          onClick={() =>
-            showInMapClicked(37.77305006786705, -122.4407280558256)
-          }
+          href="https://maps.app.goo.gl/1BuhopsjXE3cm81H9"
+          rel="noreferrer"
+          target="_blank"
           className=" w-fit cursor-pointer hover:text-slate-50"
         >
           <FontAwesomeIcon icon={faLocationDot} className="mr-2" /> 221B Baker
           Street, San Francisco.
         </a>
         <a
-          onClick={() =>
-            showInMapClicked(43.321023576578646, -72.4772111698974)
-          }
+          href="https://maps.app.goo.gl/56cHaAF2gXfJEQ7x8"
+          rel="noreferrer"
+          target="_blank"
           className=" w-fit cursor-pointer hover:text-slate-50 w- "
         >
           {" "}
@@ -50,9 +46,9 @@ const Footer = forwardRef(function Footer(props, ref) {
           602 Elm Street, Springfield, VT 05156.
         </a>
         <a
-          onClick={() =>
-            showInMapClicked(38.89775942415561, -77.03633039999998)
-          }
+          href="https://maps.app.goo.gl/V4bcJ3QKTvxZ7grT9"
+          rel="noreferrer"
+          target="_blank"
           className=" w-fit cursor-pointer hover:text-slate-50"
         >
           {" "}

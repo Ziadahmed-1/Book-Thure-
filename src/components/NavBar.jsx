@@ -23,11 +23,18 @@ const NavBar = forwardRef(function NavBar(
         <div className="flex items-center">
           <ul className="flex gap-1 md:gap-3 lg:gap-6 items-center justify-center">
             <li className="px-1 py-1 md:px-4 md:py-2 text-sm md:text-2xl hover:bg-[#21415c] rounded-lg transition-all text-center">
-              <a className="cursor-pointer" onClick={() => scrollToFooter()}>
+              <button
+                type="button"
+                aria-label="move-to-footer-section"
+                className="cursor-pointer"
+                onClick={() => scrollToFooter()}
+              >
                 About us
-              </a>
+              </button>
             </li>
             <button
+              type="button"
+              aria-label="open-shop-cart"
               onClick={openModal}
               className="cursor-pointer px-1 py-1 md:px-4 md:py-2 hover:bg-[#21415c] rounded-lg transition-all text-center"
             >
@@ -38,19 +45,23 @@ const NavBar = forwardRef(function NavBar(
               <sub className="lg:text-lg  ">({cartItems?.length})</sub>
             </button>
             {darkTheme ? (
-              <li
+              <button
+                type="button"
+                aria-label="enable-light-mode"
                 onClick={handleThemeToggle}
                 className="cursor-pointer px-1 py-1 md:px-4 md:py-2 hover:bg-[#21415c] rounded-lg transition-all text-center"
               >
                 <FontAwesomeIcon icon={faSun} className="size-4 md:size-6" />
-              </li>
+              </button>
             ) : (
-              <li
+              <button
+                type="button"
+                aria-label="enable-dark-mode"
                 onClick={handleThemeToggle}
                 className="cursor-pointer px-1 py-1 md:px-4 md:py-2 hover:bg-[#21415c] rounded-lg transition-all text-center"
               >
                 <FontAwesomeIcon icon={faMoon} className="size-4 md:size-6" />
-              </li>
+              </button>
             )}
           </ul>
         </div>

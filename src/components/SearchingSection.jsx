@@ -11,13 +11,14 @@ import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 
 const SearchingSection = forwardRef(function SearchingSection(props, ref) {
   const [sorted, setSorted] = useState(false);
+  const [err, setErr] = useState(null);
   const [result, setResult] = useState([]);
   const [isLoading, setIsLoading] = useState();
   const [curPage, setCurPage] = useState(0);
   const search = useRef();
   const BOOK_URL = "https://books-api7.p.rapidapi.com/books/find/title?title=";
   const AUTHOR_URL = "https://books-api7.p.rapidapi.com/books/find/author?";
-  let view = result.slice(curPage * 4, curPage * 4 + 4);
+  let view = result ? result.slice(curPage * 4, curPage * 4 + 4) : [];
   const loading = (
     <div className="flex flex-col gap-8 items-center justify-center text-center text-balance">
       <p className="text-xl xl:text-3xl">please wait a second...</p>
@@ -33,22 +34,37 @@ const SearchingSection = forwardRef(function SearchingSection(props, ref) {
       },
     };
   }, []);
-  let maxPages = Math.ceil(result.length / 4);
+  let maxPages = Math.ceil(result?.length / 4);
 
   useEffect(() => {
-    fetch("https://books-api7.p.rapidapi.com/books?p=1", options)
-      .then((res) => res.json())
-      .then((data) => {
-        setResult(data);
-        console.log(data);
-      });
+    try {
+      fetch("https://books-api7.p.rapidapi.com/books?p=1", options)
+        .then((res) => {
+          try {
+            if (!res.ok) {
+              throw new Error(
+                "We're currently experiencing technical difficulties. Please try again later. We apologize for the inconvenience."
+              );
+            } else {
+              return res.json();
+            }
+          } catch (err) {
+            setErr(err);
+          }
+        })
+        .then((data) => {
+          setResult(data);
+        });
+    } catch (err) {
+      setErr("sdffsadf");
+    }
   }, [options]);
 
   function onSearch() {
     if (search.current.value) {
       setIsLoading(true);
       setResult([]);
-      console.log(isLoading);
+      setErr(null);
 
       const book = search.current.value
         .split(" ")
@@ -71,7 +87,9 @@ const SearchingSection = forwardRef(function SearchingSection(props, ref) {
         fetch(`${BOOK_URL}${book}`, options)
           .then((res) => {
             if (!res.ok) {
-              throw new Error(`Error! status: ${res.status}`);
+              throw new Error(
+                "We're currently experiencing technical difficulties. Please try again later. We apologize for the inconvenience."
+              );
             } else {
               return res.json();
             }
@@ -98,7 +116,9 @@ const SearchingSection = forwardRef(function SearchingSection(props, ref) {
         fetch(author, options)
           .then((res) => {
             if (!res.ok) {
-              throw new Error(`Error! status: ${res.status}`);
+              throw new Error(
+                "We're currently experiencing technical difficulties. Please try again later. We apologize for the inconvenience."
+              );
             } else {
               return res.json();
             }
@@ -118,7 +138,9 @@ const SearchingSection = forwardRef(function SearchingSection(props, ref) {
         fetch(author2, options)
           .then((res) => {
             if (!res.ok) {
-              throw new Error(`Error! status: ${res.status}`);
+              throw new Error(
+                "We're currently experiencing technical difficulties. Please try again later. We apologize for the inconvenience."
+              );
             } else {
               return res.json();
             }
@@ -135,7 +157,7 @@ const SearchingSection = forwardRef(function SearchingSection(props, ref) {
             })
           );
       } catch (err) {
-        console.error(err.message);
+        setErr(err.message);
       } finally {
         setTimeout(() => {
           setIsLoading(false);
@@ -143,10 +165,6 @@ const SearchingSection = forwardRef(function SearchingSection(props, ref) {
       }
     }
   }
-
-  useEffect(() => {
-    console.log(isLoading);
-  }, [isLoading]);
 
   function handleLTH() {
     setResult((prev) => prev.sort((a, b) => a.pages - b.pages));
@@ -179,18 +197,12 @@ const SearchingSection = forwardRef(function SearchingSection(props, ref) {
   function handlePrev() {
     if (curPage >= 1) {
       setCurPage((prev) => prev - 1);
-      console.log(view);
-    } else {
-      console.log("no prev");
     }
   }
 
   function handleNext() {
     if (curPage < maxPages - 1) {
       setCurPage((prev) => prev + 1);
-      console.log(view);
-    } else {
-      console.log("no next");
     }
   }
 
@@ -294,7 +306,17 @@ const SearchingSection = forwardRef(function SearchingSection(props, ref) {
           </div>
         </div>
         <div className="mx-5 w-full lg:w-2/3 rounded-lg bg-stone-200 shadow-xl  justify-center gap-5 flex items-center flex-wrap pt-10 pb-12 max-w-1/4 relative">
-          {isLoading ? (
+          {err && result?.length !== 0 ? (
+            <div className="max-w-2/3 flex flex-col items-center">
+              <FontAwesomeIcon
+                icon={faCircleExclamation}
+                className="size-16 text-slate-800 "
+              />
+              <h3 className="text-md md:text-xl lg:text-2xl max-w-50 text-balance font-semibold py-6 px-3 text-lime-950 text-center">
+                {err.message}
+              </h3>
+            </div>
+          ) : isLoading ? (
             loading
           ) : view.length > 0 ? (
             view.map((book) => (

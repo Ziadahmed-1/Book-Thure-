@@ -2,7 +2,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFire } from "@fortawesome/free-solid-svg-icons";
 import BookCard from "../components/BookCard";
 
-import { faCircleUp } from "@fortawesome/free-regular-svg-icons";
 
 //import { useState, useEffect, useMemo } from "react";
 // import { motion, useScroll } from "framer-motion";

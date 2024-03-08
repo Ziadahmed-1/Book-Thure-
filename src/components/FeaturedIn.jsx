@@ -92,6 +92,8 @@ const FeaturedIn = function ({ handleScrollToTop }) {
           </div>
         </div>
         <button
+          type="button"
+          aria-label="move-to-nav-section"
           onClick={handleScrollToTop}
           className=" pt-2 pb-1 px-2 hover:bg-stone-200 bg-stone-300 fixed bottom-3 left-5  rounded-lg"
         >
